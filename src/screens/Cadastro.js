@@ -1,115 +1,80 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Dimensions,
-  TextInput,
-  Alert, 
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions } from "react-native";
+
+
 
 const windowWidth = Dimensions.get("window").width;
 
-export default function Cadastro({ navigation }) {
-  
-  const [Usuario, setUsuario] = useState("");
+export default function Login({ navigation }) {
+
   const [Email, setEmail] = useState("");
   const [Senha, setSenha] = useState("");
   const [ConfirmarSenha, setConfirmarSenha] = useState("");
 
-  
-  const ConfirmarSenha2 = async() => {
-
-    if(Usuario.trim() === ""){
-      Alert.alert("O campo Usuario, não pode estar vázio");
-      return;
-    }
-    if(Email.trim() === ""){
-      Alert.alert("O email, não pode estar vázio!")
-      return;
-    }
-
-    if(Senha.trim() === ""){
-      Alert.alert("O campo senha não pode estar vázio!");
-      return;
-    }
-   
-    if(Senha !== ConfirmarSenha){
-    Alert.alert("As senhas não são iguais");
-    return;
-    }
-  
-  try{
-    await AsyncStorage.setItem('UsuarioLogado', JSON.stringify({
-      usuario: Usuario,
-      email: Email,
-      senha: Senha })
-    );
-    navigation.navigate("Inicio");
-  }
-    catch (error){
-      Alert.alert("Erro ao salvar os dados")
-    }
-  };
-
-  
-
   return (
-
     <View style={styles.container}>
-      <Text style={styles.title}>Cadastro</Text>
+      
+      <Text style={styles.title}>Cadastra-se</Text>
 
+      
       <View style={styles.inputContainer}>
-        <Text>Nome de Usuario</Text>
+        <Text style={styles.label}>Email</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Digite seu Nome de Usuario"
-          keyboardType="default"
-          value={Usuario}
-          onChangeText={setUsuario}
-        />
-
-        <Text>Email</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite seu email"
+          placeholder="Digite seu Email"
           keyboardType="email-address"
           value={Email}
           onChangeText={setEmail}
+          style={styles.input}
         />
 
-        <Text>Senha</Text>
+        <Text style={styles.label}>Senha</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Digite sua senha"
-          keyboardType="visible-password"
+          placeholder="Digite sua Senha"
           secureTextEntry
           value={Senha}
           onChangeText={setSenha}
+          style={styles.input}
         />
 
-        <Text>Confirme Sua Senha</Text>
+        <Text style={styles.label}> Confirmar Senha</Text>
         <TextInput
-          style={styles.input}
-          placeholder="Digite sua senha novamente"
+          placeholder="Digite sua Senha"
           secureTextEntry
           value={ConfirmarSenha}
           onChangeText={setConfirmarSenha}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Cadastrar-Se"
-          onPress={ConfirmarSenha2}
+          style={styles.input}
         />
       </View>
 
-      <Text style={styles.subtitle}>Já tem uma conta?</Text>
 
-      <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={() => navigation.navigate("login")}/>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.separatorRow}>
+      <View style={styles.separatorLinha} />
+      <Text style={styles.orText}> Ou entre via </Text>
+      <View style={styles.separatorLinha} />
+      </View>
+
+    
+      <View style={styles.redesocial}>
+        <TouchableOpacity style={styles.redesocialButton}>
+          <Image
+            source={require("../../assets/imagens/Google.png")}
+            style={{ width: 40, height: 40 }}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.redesocialButton}>
+          <Image
+            source={require("../../assets/imagens/Facebook.png")}
+            style={{ width: 40, height: 40 }}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -117,35 +82,71 @@ export default function Cadastro({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
+    flex: 10,
+    padding: 25,
+    backgroundColor: "#F3f3f3",
+    justifyContent: "space-around",
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 35,
+    fontWeight: "bold",
+    alignSelf: "flex-start",
+    color: "#222",
   },
-  subtitle: {
-    marginTop: 10,
-  },
-  inputContainer: {
-    width: windowWidth * 0.8,
+  label: {
+    fontSize: 16,
+    color: "#444",
     marginBottom: 5,
+    marginTop: 20,
   },
   input: {
-    backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "#aaa",
-    borderRadius: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    marginBottom: 5,
+    borderColor: "#CCC",
+    borderRadius: 15,
+    padding: 10,
+    fontSize: 15,
+    backgroundColor: "#F9F9F9",
   },
-  buttonContainer: {
-    backgroundColor: "#ddaedd",
-    margin: 5,
-    width: windowWidth * 0.5,
-    borderRadius: 10,
+  buttonRow: {
+    flexDirection: "row",
+  },
+  button: {
+    flex: 1,
+    backgroundColor: "#2cb859",
+    paddingVertical: 12,
+    borderRadius: 20,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  orText: {
+    textAlign: "center",
+    color: "#444",
+    fontSize: 20,
+  },
+  separatorLinha: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#CCC",
+  },
+  separatorRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  redesocial: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
+  },
+  redesocialButton: {
+    backgroundColor: "#FFF",
+    borderRadius: 30,
+    padding: 10,
+    marginHorizontal: 30,
+    borderWidth: 1,
+    borderColor: "#CCC",
   },
 });
